@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1033527152263",
+    "project_id": "zenapp-14216",
+    "storage_bucket": "zenapp-14216.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033527152263:android:949e311dcd9b34de633222",
+        "android_client_info": {
+          "package_name": "com.zenapp.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1033527152263-4me70m5sak4vngeph1ef6qpgheandasj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHKz8FAA3iFPk8Xn2iFZkTFAIuxlNr4-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1033527152263-4me70m5sak4vngeph1ef6qpgheandasj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1033527152263-if9bm5cthrjjlf7qfi3uolmbd936ong8.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.zenapp.ios"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
