@@ -9,13 +9,13 @@ class PageRoutes {
     switch (settings.name) {
       case homeRoute:
         return MaterialPageRoute(
-            builder: (BuildContext context) => HomeScreen());
+            builder: (BuildContext context) => const HomeScreen());
       case loginRoute:
         return MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen());
+            builder: (BuildContext context) => const LoginScreen());
       case registerRoute:
         return MaterialPageRoute(
-            builder: (BuildContext context) => RegisterScreen());
+            builder: (BuildContext context) => const RegisterScreen());
       default:
         return _errorRoute();
     }
@@ -25,10 +25,10 @@ class PageRoutes {
     return MaterialPageRoute(builder: (BuildContext context) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Error'),
+          title: const Text('Error'),
           centerTitle: true,
         ),
-        body: Center(
+        body: const Center(
           child: Text('Pagina no encontrada'),
         ),
       );

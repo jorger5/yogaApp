@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zen_app/application/ui/ui_cubit.dart';
-import 'package:zen_app/infrastructure/auth/repositories/authentication_repository.dart';
+import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
 import 'package:zen_app/presentation/login/widgets/login_form.dart';
 import 'package:zen_app/presentation/login/widgets/logo.dart';
 
@@ -13,8 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final AuthenticationRepository? _authenticationRepository =
-      AuthenticationRepository();
+  final AuthenticationRepositoryImpl? _authenticationRepository =
+      AuthenticationRepositoryImpl();
 
   @override
   Widget build(BuildContext context) {

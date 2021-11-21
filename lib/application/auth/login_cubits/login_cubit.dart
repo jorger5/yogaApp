@@ -1,14 +1,19 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:get_it/get_it.dart';
+
+import 'package:zen_app/core/usecase/usecase.dart';
 import 'package:zen_app/core/utils/validators.dart';
-import 'package:zen_app/infrastructure/auth/repositories/authentication_repository.dart';
+import 'package:zen_app/data/auth/params/login_with_email_and_password.dart';
+import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
+import 'package:zen_app/domain/auth/usecases/login_with_google_usecase.dart';
 
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authenticationRepository) : super(const LoginState());
 
-  final AuthenticationRepository _authenticationRepository;
+  final AuthenticationRepositoryImpl _authenticationRepository;
 
   void emailChanged(String value) {
     final String newEmail = value;
@@ -37,32 +42,35 @@ class LoginCubit extends Cubit<LoginState> {
     final String? email = state.email ?? '';
     final String? password = state.password ?? '';
     try {
-      emit(LoginLoading());
-      await _authenticationRepository.logInWithEmailAndPassword(
+      emit(const LoginLoading());
+      await _authenticationRepository
+          .logInWithEmailAndPassword(LoginWithEmailAndPasswordRequestParams(
         email: email!,
         password: password!,
-      );
-      emit(LoginSuccess());
+      ));
+      emit(const LoginSuccess());
     } on Exception {
-      emit(LoginFailed());
+      emit(const LoginFailed());
     }
   }
 
   Future<void> logInWithGoogle() async {
+    final logInWithGoogleUseCase = GetIt.I<LogInWithGoogleUseCase>();
+
     try {
-      await _authenticationRepository.logInWithGoogle();
-      emit(LoginSuccess());
+      await logInWithGoogleUseCase(params: NoParams());
+      emit(const LoginSuccess());
     } catch (_) {
-      emit(LoginFailed());
+      emit(const LoginFailed());
     }
   }
 
   Future<void> logInWithApple() async {
     try {
-      await _authenticationRepository.logInWithApple();
-      emit(LoginSuccess());
+      await _authenticationRepository.logInWithApple(NoParams());
+      emit(const LoginSuccess());
     } catch (_) {
-      emit(LoginFailed());
+      emit(const LoginFailed());
     }
   }
 }

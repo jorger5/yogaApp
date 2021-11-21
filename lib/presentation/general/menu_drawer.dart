@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zen_app/application/auth/auth_cubits/auth_cubit.dart';
-import 'package:zen_app/core/models/user.dart';
+import 'package:zen_app/data/user/models/user_model.dart';
 import 'package:zen_app/core/utils/constants.dart';
 import 'package:zen_app/presentation/login/login_screen.dart';
 
 class MenuDrawer extends StatefulWidget {
-  const MenuDrawer({this.user});
-  final User? user;
+  const MenuDrawer({Key? key, this.user});
+  final UserModel? user;
   @override
   _MenuDrawerState createState() => _MenuDrawerState();
 }

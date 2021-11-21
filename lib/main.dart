@@ -5,17 +5,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:zen_app/application/auth/auth_cubits/auth_cubit.dart';
 import 'package:zen_app/application/auth/login_cubits/login_cubit.dart';
 import 'package:zen_app/application/ui/ui_cubit.dart';
+import 'package:zen_app/config/injectable/injector.dart';
 import 'package:zen_app/config/routes/routes.dart';
-import 'package:zen_app/infrastructure/auth/repositories/authentication_repository.dart';
+import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
 import 'package:zen_app/presentation/app_bloc_observer.dart';
 import 'package:zen_app/presentation/logged_user/logged_user_screen.dart';
 import 'package:zen_app/presentation/login/login_screen.dart';
 
 Future<void> main() async {
-  Bloc.observer = AppBlocObserver();
+  // Bloc.observer = AppBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp();
+    await configureDependencies();
     runApp(App());
   } catch (e) {
     print(e);
@@ -28,8 +30,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  final AuthenticationRepository _authenticationRepository =
-      AuthenticationRepository();
+  final AuthenticationRepositoryImpl _authenticationRepository =
+      AuthenticationRepositoryImpl();
 
   @override
   void initState() {
@@ -56,12 +58,12 @@ class _AppState extends State<App> {
           child: BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Unauthenticated) {
-                return LoginScreen();
+                return const LoginScreen();
               }
               if (state is Authenticated) {
-                return LoggedUserScreen();
+                return const LoggedUserScreen();
               } else {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               }
             },
           ),

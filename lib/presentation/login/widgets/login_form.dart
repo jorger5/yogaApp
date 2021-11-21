@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:zen_app/application/auth/login_cubits/login_cubit.dart';
 import 'package:zen_app/core/utils/constants.dart';
-import 'package:zen_app/infrastructure/auth/repositories/authentication_repository.dart';
+import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
+
 import 'package:zen_app/presentation/general/rounded_button.dart';
 import 'package:zen_app/presentation/login/widgets/login_fields.dart';
 import 'package:zen_app/presentation/login/widgets/social_login_buttons.dart';
@@ -13,7 +14,7 @@ class LoginForm extends StatefulWidget {
     required this.authenticationRepository,
   }) : super(key: key);
 
-  final AuthenticationRepository authenticationRepository;
+  final AuthenticationRepositoryImpl authenticationRepository;
 
   @override
   _LoginFormState createState() => _LoginFormState();

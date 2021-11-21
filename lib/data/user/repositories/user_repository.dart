@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rxdart/subjects.dart';
-import 'package:zen_app/core/models/user.dart';
+import 'package:zen_app/data/user/models/user_model.dart';
+
 import 'package:zen_app/domain/auth/failures/auth_failure.dart';
+import 'package:zen_app/domain/entities/user.dart';
 
 class UserRepository {
   final _user = BehaviorSubject<User>();
@@ -15,8 +17,10 @@ class UserRepository {
   Future<void> getUser({id}) async {
     try {
       final userDoc = await userCollection.doc(id).get();
-      final User user = User.fromJson(userDoc.data()!);
-      _user.sink.add(user);
+      if (userDoc.exists) {
+        final user = UserModel.fromJson(userDoc.data()!);
+        addToStream(user);
+      }
     } catch (e) {
       print(e);
       throw NoUserFound();
@@ -24,7 +28,7 @@ class UserRepository {
   }
 
   /// Actualizar o registrar un usuario en Firestore
-  Future<bool> updateOrRegister({required User user}) async {
+  Future<bool> updateOrRegister({required UserModel user}) async {
     try {
       await userCollection.doc(user.id).set(user.toJson());
       return true;

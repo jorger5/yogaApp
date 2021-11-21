@@ -1,19 +1,22 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:zen_app/infrastructure/auth/repositories/authentication_repository.dart';
+import 'package:get_it/get_it.dart';
+import 'package:zen_app/core/usecase/usecase.dart';
+import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
+import 'package:zen_app/domain/auth/usecases/logout_usecase.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   AuthCubit(
-    AuthenticationRepository authenticationRepository,
+    AuthenticationRepositoryImpl authenticationRepository,
   )   : _authenticationRepository = authenticationRepository,
         super(authenticationRepository.getUser() == null
-            ? Unauthenticated()
+            ? const Unauthenticated()
             : Authenticated(authenticationRepository.getUser()!));
 
-  final AuthenticationRepository _authenticationRepository;
+  final AuthenticationRepositoryImpl _authenticationRepository;
 
   Future<void> userLoggedIn() async {
     try {
@@ -24,17 +27,18 @@ class AuthCubit extends Cubit<AuthState> {
         emit(Authenticated(user));
       } else {
         print('unauthenticated');
-        emit(Unauthenticated());
+        emit(const Unauthenticated());
       }
     } catch (_) {
-      emit(Unauthenticated());
+      emit(const Unauthenticated());
     }
   }
 
   Future<void> userLogOut() async {
-    await _authenticationRepository.logOut();
+    final logOutUseCase = GetIt.I<LogOutUseCase>();
+    await logOutUseCase(params: NoParams());
     if (_authenticationRepository.getUser() == null) {
-      emit(Unauthenticated());
+      emit(const Unauthenticated());
     }
   }
 }

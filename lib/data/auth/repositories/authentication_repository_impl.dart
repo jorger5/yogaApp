@@ -4,20 +4,23 @@ import 'package:crypto/crypto.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:injectable/injectable.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:zen_app/core/models/user.dart';
+
+import 'package:zen_app/core/usecase/usecase.dart';
+import 'package:zen_app/data/auth/params/login_with_email_and_password.dart';
+import 'package:zen_app/data/auth/params/register_user_params.dart';
+import 'package:zen_app/data/user/models/user_model.dart';
 import 'package:zen_app/domain/auth/failures/auth_failure.dart';
-import 'package:zen_app/infrastructure/user/repositories/user_repository.dart';
+import 'package:zen_app/data/user/repositories/user_repository.dart';
+import 'package:zen_app/domain/auth/repository/authentication_repository.dart';
+import 'package:zen_app/domain/entities/user.dart';
 
-class AuthenticationRepository {
-  AuthenticationRepository({
-    firebase_auth.FirebaseAuth? firebaseAuth,
-    GoogleSignIn? googleSignIn,
-  })  : _firebaseAuth = firebaseAuth ?? firebase_auth.FirebaseAuth.instance,
-        _googleSignIn = googleSignIn ?? GoogleSignIn.standard();
-
-  final firebase_auth.FirebaseAuth? _firebaseAuth;
-  final GoogleSignIn? _googleSignIn;
+@Injectable(as: AuthenticationRepository)
+class AuthenticationRepositoryImpl implements AuthenticationRepository {
+  final firebase_auth.FirebaseAuth? _firebaseAuth =
+      firebase_auth.FirebaseAuth.instance;
+  final GoogleSignIn? _googleSignIn = GoogleSignIn.standard();
 
   String generateNonce([int length = 32]) {
     const String charset =
@@ -44,17 +47,17 @@ class AuthenticationRepository {
   /// Creates a new user with the provided [email] and [password].
   ///
   /// Throws a [SignUpFailure] if an exception occurs.
-  Future<void> register(
-      {required String email, required String password}) async {
+  @override
+  Future<void> register(RegisterUserRequestParams params) async {
     try {
       final userData = await _firebaseAuth!.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: params.email,
+        password: params.password,
       );
 
-      var user = User(
+      var user = UserModel(
         id: userData.user!.uid,
-        email: email,
+        email: params.email,
         emailVerified: userData.user!.emailVerified,
       );
 
@@ -67,7 +70,8 @@ class AuthenticationRepository {
   /// Starts the Sign In with Google Flow.
   ///
   /// Throws a [logInWithGoogle] if an exception occurs.
-  Future<void> logInWithGoogle() async {
+  @override
+  Future<void> logInWithGoogle(NoParams noParams) async {
     try {
       print('Trying to log with google');
       final GoogleSignInAccount? googleUser = await _googleSignIn!.signIn();
@@ -79,13 +83,25 @@ class AuthenticationRepository {
         idToken: googleAuth?.idToken,
       );
       final credentials = await _firebaseAuth!.signInWithCredential(credential);
+      final user = UserModel(
+        id: credentials.user!.uid,
+        email: credentials.user!.email,
+        niceName: credentials.user!.displayName ?? '',
+        emailVerified: credentials.user!.emailVerified,
+        photo: credentials.user!.photoURL ?? '',
+      );
+
+      await UserRepository().updateOrRegister(user: user);
       print(credentials);
     } catch (_) {
+      print(_);
       throw LogInWithGoogleFailure();
     }
   }
 
-  Future<firebase_auth.UserCredential?> logInWithApple() async {
+  @override
+  Future<firebase_auth.UserCredential?> logInWithApple(
+      NoParams noParams) async {
     final rawNonce = generateNonce();
     final nonce = sha256ofString(rawNonce);
     try {
@@ -111,15 +127,14 @@ class AuthenticationRepository {
   /// Signs in with the provided [email] and [password].
   ///
   /// Throws a [LogInWithEmailAndPasswordFailure] if an exception occurs.
-  Future<firebase_auth.UserCredential?> logInWithEmailAndPassword({
-    required String email,
-    required String password,
-  }) async {
-    print('Trying to log with credentials $email');
+  @override
+  Future<firebase_auth.UserCredential?> logInWithEmailAndPassword(
+      LoginWithEmailAndPasswordRequestParams params) async {
+    print('Trying to log with credentials ${params.email}');
     try {
       final credentials = await _firebaseAuth?.signInWithEmailAndPassword(
-        email: email,
-        password: password,
+        email: params.email,
+        password: params.password,
       );
       return credentials;
     } on Exception {
@@ -131,7 +146,8 @@ class AuthenticationRepository {
   /// [User.empty] from the [user] Stream.
   ///
   /// Throws a [LogOutFailure] if an exception occurs.
-  Future<void> logOut() async {
+  @override
+  Future<void> logOut(NoParams noParams) async {
     try {
       await Future.wait([
         _firebaseAuth!.signOut(),
@@ -153,8 +169,8 @@ class AuthenticationRepository {
 }
 
 extension on firebase_auth.User {
-  User get toUser {
-    return User(
+  UserModel get toUser {
+    return UserModel(
       id: uid,
       email: email,
       name: displayName!,

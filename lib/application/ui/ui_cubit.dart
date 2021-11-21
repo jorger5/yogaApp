@@ -22,16 +22,16 @@ class UiCubit extends Cubit<UiState> {
     try {
       switch (screen) {
         case 'home':
-          emit(HomeScreenSelected());
+          emit(const HomeScreenSelected());
           break;
         case 'yoga':
-          emit(YogaScreenSelected());
+          emit(const YogaScreenSelected());
           break;
         case 'meditation':
-          emit(MeditationScreenSelected());
+          emit(const MeditationScreenSelected());
           break;
         case 'profile':
-          emit(ProfileScreenSelected());
+          emit(const ProfileScreenSelected());
           break;
         default:
       }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zen_app/core/models/user.dart';
+import 'package:zen_app/data/user/models/user_model.dart';
 import 'package:zen_app/core/utils/string_helpers.dart';
-import 'package:zen_app/infrastructure/user/repositories/user_repository.dart';
+import 'package:zen_app/data/user/repositories/user_repository.dart';
+import 'package:zen_app/domain/entities/user.dart';
 import 'package:zen_app/presentation/home/widgets/user_info_cards.dart';
 
 class HomeScreen extends StatefulWidget {
