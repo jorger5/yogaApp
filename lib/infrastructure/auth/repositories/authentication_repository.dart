@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
+
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:zen_app/core/models/user.dart';
 import 'package:zen_app/domain/auth/failures/auth_failure.dart';
+import 'package:zen_app/infrastructure/user/repositories/user_repository.dart';
 
 class AuthenticationRepository {
   AuthenticationRepository({
@@ -45,10 +47,18 @@ class AuthenticationRepository {
   Future<void> register(
       {required String email, required String password}) async {
     try {
-      await _firebaseAuth!.createUserWithEmailAndPassword(
+      final userData = await _firebaseAuth!.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      var user = User(
+        id: userData.user!.uid,
+        email: email,
+        emailVerified: userData.user!.emailVerified,
+      );
+
+      await UserRepository().updateOrRegister(user: user);
     } on Exception {
       throw SignUpFailure();
     }

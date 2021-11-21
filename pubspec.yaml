@@ -31,8 +31,8 @@ dependencies:
     sdk: flutter
 
   # bloc_pattern:
-  bloc: ^7.2.1
-  flutter_bloc: ^7.3.3
+  bloc: ^8.0.1
+  flutter_bloc: ^8.0.0
   provider: ^6.0.1
 
   crypto: ^3.0.1
@@ -62,7 +62,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  bloc_test: ^8.5.0
+  bloc_test: ^9.0.1
   lints: ^1.0.1
 
   # The "flutter_lints" package below contains a set of recommended lints to

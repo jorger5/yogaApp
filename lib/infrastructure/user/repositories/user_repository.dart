@@ -23,6 +23,16 @@ class UserRepository {
     }
   }
 
+  /// Actualizar o registrar un usuario en Firestore
+  Future<bool> updateOrRegister({required User user}) async {
+    try {
+      await userCollection.doc(user.id).set(user.toJson());
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<void> addUser(User user) async {
     try {
       final String id = userCollection.doc().id;
