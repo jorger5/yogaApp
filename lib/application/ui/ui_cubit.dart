@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 part 'ui_state.dart';
 
+@singleton
 class UiCubit extends Cubit<UiState> {
   UiCubit() : super(const UiState());
 

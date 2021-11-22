@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:zen_app/application/ui/ui_cubit.dart';
 import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
 import 'package:zen_app/presentation/login/widgets/login_form.dart';
@@ -16,11 +17,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthenticationRepositoryImpl? _authenticationRepository =
       AuthenticationRepositoryImpl();
 
+  final UiCubit _uiCubit = GetIt.I<UiCubit>();
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: BlocBuilder<UiCubit, UiState>(
+        bloc: _uiCubit,
         builder: (context, state) {
           print(state);
           return Stack(

@@ -1,8 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:zen_app/core/utils/constants.dart';
 import 'package:zen_app/domain/entities/user.dart';
 
-/// [User.empty] represents an unauthenticated user.
+/// [UserModel] extends User and has json Methods
 class UserModel extends User {
   const UserModel({
     required String id,
@@ -24,7 +23,7 @@ class UserModel extends User {
           lastName: lastName ?? '',
           userName: userName ?? '',
           niceName: niceName ?? '',
-          photo: photo ?? '',
+          photo: photo ?? placeHolderPhoto,
           emailVerified: emailVerified ?? false,
         );
 

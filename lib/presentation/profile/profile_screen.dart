@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:zen_app/application/auth/auth_cubits/auth_cubit.dart';
-import 'package:zen_app/data/user/models/user_model.dart';
 import 'package:zen_app/core/utils/constants.dart';
 import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
 import 'package:zen_app/domain/entities/user.dart';

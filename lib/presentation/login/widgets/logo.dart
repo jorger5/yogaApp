@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:zen_app/application/auth/login_cubits/login_cubit.dart';
 import 'package:zen_app/application/ui/ui_cubit.dart';
 
@@ -13,13 +14,15 @@ class Logo extends StatefulWidget {
 class _LogoState extends State<Logo> with TickerProviderStateMixin {
   late final AnimationController _breathingController;
   UiCubit? _uiBloc;
+  LoginCubit? _loginBloc;
 
   double _breath = 1.0;
 
   @override
   void initState() {
     super.initState();
-    _uiBloc = BlocProvider.of<UiCubit>(context);
+    _uiBloc = GetIt.I<UiCubit>();
+    _loginBloc = GetIt.I<LoginCubit>();
 
     _breathingController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
@@ -47,6 +50,7 @@ class _LogoState extends State<Logo> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return BlocBuilder<LoginCubit, LoginState>(
+      bloc: _loginBloc,
       builder: (context, state) {
         return Stack(
           alignment: AlignmentDirectional.center,

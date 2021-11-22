@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:zen_app/application/auth/login_cubits/login_cubit.dart';
 import 'package:zen_app/core/utils/constants.dart';
 import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
@@ -38,7 +39,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _loginBloc = BlocProvider.of<LoginCubit>(context);
+    _loginBloc = GetIt.instance<LoginCubit>();
     _fadeController.forward(from: 0.0);
     _node.addListener(() {
       setState(() {});
@@ -72,6 +73,7 @@ class _LoginFormState extends State<LoginForm> with TickerProviderStateMixin {
     final Size size = MediaQuery.of(context).size;
 
     return BlocConsumer<LoginCubit, LoginState>(
+      bloc: _loginBloc,
       listener: (context, state) {
         if (state is LoginFailed) {
           ScaffoldMessenger.of(context)

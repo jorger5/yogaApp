@@ -1,19 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:zen_app/core/usecase/usecase.dart';
 import 'package:zen_app/core/utils/validators.dart';
 import 'package:zen_app/data/auth/params/login_with_email_and_password.dart';
-import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
-import 'package:zen_app/domain/auth/usecases/login_with_google_usecase.dart';
+import 'package:zen_app/domain/auth/usecases/auth_usecase_index.dart';
 
 part 'login_state.dart';
 
+@singleton
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit(this._authenticationRepository) : super(const LoginState());
-
-  final AuthenticationRepositoryImpl _authenticationRepository;
+  LoginCubit() : super(const LoginState());
 
   void emailChanged(String value) {
     final String newEmail = value;
@@ -36,18 +35,19 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithCredentials() async {
+    final loginWithCredentialsUC = GetIt.I<LoginWithCredentialsUC>();
+
     if (state.validEmail == false || state.hasPassword == false) {
       return;
     }
-    final String? email = state.email ?? '';
-    final String? password = state.password ?? '';
+    final String email = state.email ?? '';
+    final String password = state.password ?? '';
     try {
       emit(const LoginLoading());
-      await _authenticationRepository
-          .logInWithEmailAndPassword(LoginWithEmailAndPasswordRequestParams(
-        email: email!,
-        password: password!,
-      ));
+      await loginWithCredentialsUC(
+          params: LoginWithEmailAndPasswordRequestParams(
+              email: email, password: password));
+
       emit(const LoginSuccess());
     } on Exception {
       emit(const LoginFailed());
@@ -55,10 +55,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithGoogle() async {
-    final logInWithGoogleUseCase = GetIt.I<LogInWithGoogleUseCase>();
+    final logInWithGoogleUC = GetIt.I<LogInWithGoogleUC>();
 
     try {
-      await logInWithGoogleUseCase(params: NoParams());
+      await logInWithGoogleUC(params: NoParams());
       emit(const LoginSuccess());
     } catch (_) {
       emit(const LoginFailed());
@@ -66,8 +66,10 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   Future<void> logInWithApple() async {
+    final loginWithAppleUC = GetIt.I<LoginWithAppleUC>();
+
     try {
-      await _authenticationRepository.logInWithApple(NoParams());
+      await loginWithAppleUC(params: NoParams());
       emit(const LoginSuccess());
     } catch (_) {
       emit(const LoginFailed());

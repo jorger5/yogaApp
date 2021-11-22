@@ -3,10 +3,10 @@ import 'package:zen_app/data/auth/params/register_user_params.dart';
 
 import 'package:zen_app/domain/auth/repository/authentication_repository.dart';
 
-class RegisterUserUseCase implements UseCase<void, RegisterUserRequestParams> {
+class RegisterUserUC implements UseCase<void, RegisterUserRequestParams> {
   final AuthenticationRepository _authenticationRepository;
 
-  RegisterUserUseCase(this._authenticationRepository);
+  RegisterUserUC(this._authenticationRepository);
 
   @override
   Future<void> call({required RegisterUserRequestParams params}) {

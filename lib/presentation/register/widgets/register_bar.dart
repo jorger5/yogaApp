@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class RegisterBar extends StatefulWidget with PreferredSizeWidget {
+  const RegisterBar({Key? key}) : super(key: key);
+
   @override
   Size get preferredSize => const Size.fromHeight(60);
   @override
@@ -20,13 +22,11 @@ class _RegisterBarState extends State<RegisterBar> {
       backgroundColor: Colors.white,
       iconTheme: IconThemeData(color: Colors.green),
       centerTitle: true,
-      title: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Text('Middle Icon'),
-          ],
-        ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Text('Middle Icon'),
+        ],
       ),
       elevation: 20,
     );

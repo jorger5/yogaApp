@@ -6,8 +6,9 @@ import 'package:zen_app/core/utils/constants.dart';
 import 'package:zen_app/presentation/login/login_screen.dart';
 
 class MenuDrawer extends StatefulWidget {
-  const MenuDrawer({Key? key, this.user});
   final UserModel? user;
+
+  const MenuDrawer({Key? key, this.user}) : super(key: key);
   @override
   _MenuDrawerState createState() => _MenuDrawerState();
 }

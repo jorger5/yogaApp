@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:zen_app/application/ui/ui_cubit.dart';
 import 'package:zen_app/presentation/home/home_screen.dart';
 import 'package:zen_app/presentation/logged_user/widgets/logged_user_bottom_bar.dart';
@@ -13,10 +14,12 @@ class LoggedUserScreen extends StatefulWidget {
 }
 
 class _LoggedUserScreenState extends State<LoggedUserScreen> {
+  final _uiCubit = GetIt.I<UiCubit>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<UiCubit, UiState>(
+        bloc: _uiCubit,
         builder: (context, state) {
           if (state is HomeScreenSelected) {
             return HomeScreen();

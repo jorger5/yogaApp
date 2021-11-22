@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:zen_app/application/auth/auth_cubits/auth_cubit.dart';
-import 'package:zen_app/application/auth/login_cubits/login_cubit.dart';
-import 'package:zen_app/application/ui/ui_cubit.dart';
 import 'package:zen_app/config/injectable/injector.dart';
 import 'package:zen_app/config/routes/routes.dart';
 import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
-import 'package:zen_app/presentation/app_bloc_observer.dart';
 import 'package:zen_app/presentation/logged_user/logged_user_screen.dart';
 import 'package:zen_app/presentation/login/login_screen.dart';
 
@@ -25,6 +23,8 @@ Future<void> main() async {
 }
 
 class App extends StatefulWidget {
+  const App({Key? key}) : super(key: key);
+
   @override
   _AppState createState() => _AppState();
 }
@@ -36,7 +36,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    LoginCubit(_authenticationRepository);
+
     AuthCubit(_authenticationRepository);
   }
 
@@ -45,12 +45,8 @@ class _AppState extends State<App> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => LoginCubit(_authenticationRepository),
-        ),
-        BlocProvider(
           create: (context) => AuthCubit(_authenticationRepository),
         ),
-        BlocProvider(create: (context) => UiCubit()),
       ],
       child: MaterialApp(
         home: BlocProvider(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:zen_app/application/ui/ui_cubit.dart';
 import 'package:zen_app/core/utils/constants.dart';
 
@@ -17,7 +17,7 @@ class _LoggedUserBottomBarState extends State<LoggedUserBottomBar> {
 
   @override
   void initState() {
-    _uiBloc = BlocProvider.of<UiCubit>(context);
+    _uiBloc = GetIt.I<UiCubit>();
 
     super.initState();
   }
