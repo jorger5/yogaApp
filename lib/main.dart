@@ -8,7 +8,7 @@ import 'package:zen_app/config/injectable/injector.dart';
 import 'package:zen_app/config/routes/routes.dart';
 import 'package:zen_app/data/auth/repositories/authentication_repository_impl.dart';
 import 'package:zen_app/presentation/logged_user/logged_user_screen.dart';
-import 'package:zen_app/presentation/login/login_screen.dart';
+import 'package:zen_app/presentation/onboarding/onboarding_screen.dart';
 
 Future<void> main() async {
   // Bloc.observer = AppBlocObserver();
@@ -54,7 +54,7 @@ class _AppState extends State<App> {
           child: BlocBuilder<AuthCubit, AuthState>(
             builder: (context, state) {
               if (state is Unauthenticated) {
-                return const LoginScreen();
+                return const OnboardingScreen();
               }
               if (state is Authenticated) {
                 return const LoggedUserScreen();

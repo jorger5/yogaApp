@@ -6,6 +6,7 @@ const String registerRoute = '/register';
 const String meditationRoute = '/meditation';
 const String loginRoute = '/login';
 const String yogaRoute = '/yoga';
+const String onboardingRoute = '/onboarding';
 
 //regExp
 
