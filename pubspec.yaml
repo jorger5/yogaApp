@@ -36,7 +36,7 @@ dependencies:
   provider: ^6.0.1
 
   crypto: ^3.0.1
-  dio: ^4.0.3
+  dio: ^4.0.4
   equatable: ^2.0.3
   #firebase
   cloud_firestore: ^3.1.0
