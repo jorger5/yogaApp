@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zen_app/core/utils/constants.dart';
 import 'package:zen_app/presentation/home/home_screen.dart';
 import 'package:zen_app/presentation/login/login_screen.dart';
+import 'package:zen_app/presentation/onboarding/onboarding_screen.dart';
 import 'package:zen_app/presentation/register/register.dart';
 
 class PageRoutes {
@@ -16,6 +17,9 @@ class PageRoutes {
       case registerRoute:
         return MaterialPageRoute(
             builder: (BuildContext context) => const RegisterScreen());
+      case onboardingRoute:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const OnboardingScreen());
       default:
         return _errorRoute();
     }
