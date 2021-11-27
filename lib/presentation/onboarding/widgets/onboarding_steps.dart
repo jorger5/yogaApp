@@ -24,8 +24,8 @@ class OnboardingStep extends StatelessWidget {
     return Column(
       children: [
         Container(
-            margin:
-                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.1),
+            margin: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.005),
             child: Image.network(
               'https://via.placeholder.com/1300x1500?text=PlaceHolder Mientras ',
               height: MediaQuery.of(context).size.height * 0.6,
